@@ -11,6 +11,7 @@
 		3419B18EAA7417E1A0932B57 /* libPods-RiseforTahajjud.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E83027F301D404A1E2F4C5F8 /* libPods-RiseforTahajjud.a */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		65DAA27FCA5F9F3C36F38F5E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 1E941923B79D575CE23DBFFB /* PrivacyInfo.xcprivacy */; };
+		7A1C3F5E9B2D4A6F8E0C1B2D /* adhan.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7A1C3F5E9B2D4A6F8E0C1B2C /* adhan.wav */; };
 		B4E1396B4BBCB538DFD7AC4C /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E49330E9D4C073AD454A7E59 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
@@ -22,6 +23,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = RiseforTahajjud/Info.plist; sourceTree = "<group>"; };
 		1E941923B79D575CE23DBFFB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = RiseforTahajjud/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		6F458D8A6A6A59A9624E825A /* Pods-RiseforTahajjud.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiseforTahajjud.debug.xcconfig"; path = "Target Support Files/Pods-RiseforTahajjud/Pods-RiseforTahajjud.debug.xcconfig"; sourceTree = "<group>"; };
+		7A1C3F5E9B2D4A6F8E0C1B2C /* adhan.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = adhan.wav; sourceTree = "<group>"; };
 		A6FE380C2BA63DC4D92B6C7A /* Pods-RiseforTahajjud.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RiseforTahajjud.release.xcconfig"; path = "Target Support Files/Pods-RiseforTahajjud/Pods-RiseforTahajjud.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = RiseforTahajjud/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 		BB2F792B24A3F905000567C9 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
+				7A1C3F5E9B2D4A6F8E0C1B2C /* adhan.wav */,
 				BB2F792C24A3F905000567C9 /* Expo.plist */,
 			);
 			name = Supporting;
@@ -196,6 +199,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 				65DAA27FCA5F9F3C36F38F5E /* PrivacyInfo.xcprivacy in Resources */,
+				7A1C3F5E9B2D4A6F8E0C1B2D /* adhan.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -5,6 +5,9 @@ import Constants from 'expo-constants';
 
 import type { NextAwakening } from "@/types";
 
+const NOTIFICATION_CHANNEL_ID = "tahajjud-awakening";
+const NOTIFICATION_SOUND = "adhan.wav";
+
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowBanner: true,
@@ -22,16 +25,16 @@ export async function prepareNotifications() {
   }
 
   if (Platform.OS === "android") {
-    await Notifications.setNotificationChannelAsync("tahajjud-awakening", {
+    await Notifications.setNotificationChannelAsync(NOTIFICATION_CHANNEL_ID, {
       name: "Tahajjud Awakening",
       importance: Notifications.AndroidImportance.MAX,
       vibrationPattern: [0, 250, 200, 250],
       lightColor: "#D4AF37",
-      sound: "default",
+      sound: NOTIFICATION_SOUND,
     });
   } else if (Platform.OS === "ios") {
     // iOS notification setup
-    await Notifications.setNotificationCategoryAsync("tahajjud-awakening", []);
+    await Notifications.setNotificationCategoryAsync(NOTIFICATION_CHANNEL_ID, []);
   }
 
   // Get and log push token for testing
@@ -85,14 +88,14 @@ export async function syncScheduledNotifications(awakenings: NextAwakening[]) {
 
     // Android-specific: add channel ID
     if (Platform.OS === "android") {
-      (trigger as any).channelId = "tahajjud-awakening";
+      (trigger as any).channelId = NOTIFICATION_CHANNEL_ID;
     }
 
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "Rise for Tahajjud",
         body: `Awaken now. Fajr is at ${format(awakening.prayers.Fajr, "h:mm a")}.`,
-        sound: "default",
+        sound: NOTIFICATION_SOUND,
         data: {
           wakeUpIso: awakening.wakeUpTime.toISOString(),
         },
