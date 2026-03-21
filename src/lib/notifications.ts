@@ -1,6 +1,7 @@
 import { format } from "date-fns";
 import { Platform } from "react-native";
 import * as Notifications from "expo-notifications";
+import Constants from 'expo-constants';
 
 import type { NextAwakening } from "@/types";
 
@@ -31,6 +32,45 @@ export async function prepareNotifications() {
   } else if (Platform.OS === "ios") {
     // iOS notification setup
     await Notifications.setNotificationCategoryAsync("tahajjud-awakening", []);
+  }
+
+  // Get and log push token for testing
+  try {
+    const pushToken = await getExpoPushToken();
+    console.log("Expo Push Token:", pushToken);
+    return pushToken;
+  } catch (error) {
+    console.error("Failed to get push token:", error);
+    return null;
+  }
+}
+
+export async function getExpoPushToken(): Promise<string> {
+  // For development, you can hardcode your project ID here
+  // Get it from: https://expo.dev/accounts/[account]/projects/[project]/settings
+  const projectId =
+    Constants?.expoConfig?.extra?.eas?.projectId ??
+    Constants?.easConfig?.projectId ??
+    "b594b3b2-1b65-4748-9cea-144a2d1be81b";
+
+  if (!projectId) {
+    console.warn("⚠️  No valid Expo project ID found. Push notifications may not work.");
+    console.warn("📝 To fix this:");
+    console.warn("   1. Go to https://expo.dev and find your project");
+    console.warn("   2. Copy the Project ID from Settings");
+    console.warn("   3. Add it to app.json under: expo.extra.eas.projectId");
+    throw new Error("Expo Push Notifications require a valid project ID.");
+  }
+
+  try {
+    const pushTokenString = (
+      await Notifications.getExpoPushTokenAsync({
+        projectId,
+      })
+    ).data;
+    return pushTokenString;
+  } catch (e: unknown) {
+    throw new Error(`Failed to get Expo push token: ${e instanceof Error ? e.message : String(e)}`);
   }
 }
 

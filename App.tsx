@@ -25,6 +25,7 @@ import {
   View,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import * as Notifications from "expo-notifications";
 
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
@@ -66,6 +67,8 @@ function AppContent() {
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   const [now, setNow] = useState(() => new Date());
+
+
 
   useEffect(() => {
     const timer = setInterval(() => {

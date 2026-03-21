@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Rise for Tahajjud",
-    "slug": "rise-for-tahajjud",
+    "slug": "risefortahajjud20",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
@@ -24,12 +24,20 @@
         "ACCESS_COARSE_LOCATION",
         "ACCESS_FINE_LOCATION",
         "POST_NOTIFICATIONS",
-        "SCHEDULE_EXACT_ALARM"
+        "SCHEDULE_EXACT_ALARM",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
       ]
     },
     "plugins": [
       "expo-notifications",
       "expo-location"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b594b3b2-1b65-4748-9cea-144a2d1be81b"
+      }
+    },
+    "owner": "coulibalytech"
   }
 }
