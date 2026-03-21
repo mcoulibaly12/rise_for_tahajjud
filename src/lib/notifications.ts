@@ -28,6 +28,9 @@ export async function prepareNotifications() {
       lightColor: "#D4AF37",
       sound: "default",
     });
+  } else if (Platform.OS === "ios") {
+    // iOS notification setup
+    await Notifications.setNotificationCategoryAsync("tahajjud-awakening", []);
   }
 }
 
@@ -35,6 +38,16 @@ export async function syncScheduledNotifications(awakenings: NextAwakening[]) {
   await Notifications.cancelAllScheduledNotificationsAsync();
 
   for (const awakening of awakenings) {
+    const trigger: Notifications.NotificationTriggerInput = {
+      type: Notifications.SchedulableTriggerInputTypes.DATE,
+      date: awakening.wakeUpTime,
+    };
+
+    // Android-specific: add channel ID
+    if (Platform.OS === "android") {
+      (trigger as any).channelId = "tahajjud-awakening";
+    }
+
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "Rise for Tahajjud",
@@ -44,11 +57,7 @@ export async function syncScheduledNotifications(awakenings: NextAwakening[]) {
           wakeUpIso: awakening.wakeUpTime.toISOString(),
         },
       },
-      trigger: {
-        type: Notifications.SchedulableTriggerInputTypes.DATE,
-        channelId: "tahajjud-awakening",
-        date: awakening.wakeUpTime,
-      },
+      trigger,
     });
   }
 }
