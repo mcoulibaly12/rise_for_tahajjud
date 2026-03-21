@@ -1,43 +1,42 @@
 {
   "expo": {
     "name": "Rise for Tahajjud",
-    "slug": "risefortahajjud20",
-    "version": "1.0.0",
+    "slug": "rise_for_tahajjud",
+    "version": "2.0.0",
+    "jsEngine": "hermes",
     "orientation": "portrait",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "light",
     "splash": {
-      "backgroundColor": "#050508"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.risefortahajjud.app",
-      "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Rise for Tahajjud uses your location to calculate the correct local Fajr time."
-      }
-    },
-    "android": {
-      "package": "com.risefortahajjud.app",
-      "permissions": [
-        "ACCESS_COARSE_LOCATION",
-        "ACCESS_FINE_LOCATION",
-        "POST_NOTIFICATIONS",
-        "SCHEDULE_EXACT_ALARM",
-        "android.permission.ACCESS_COARSE_LOCATION",
-        "android.permission.ACCESS_FINE_LOCATION"
-      ]
+      "backgroundColor": "#ffffff"
     },
     "plugins": [
       "expo-notifications",
-      "expo-location"
+      "expo-location",
+      "expo-localization"
     ],
-    "extra": {
-      "eas": {
-        "projectId": "b594b3b2-1b65-4748-9cea-144a2d1be81b"
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.isiTech.risefortahajjud",
+      "buildNumber": "1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSUserNotificationUsageDescription": "This app uses notifications to send you daily prayer time reminders and wake-up alerts for Tahajjud prayer. Notifications include daily prayer schedules, gentle wake-up alarms with adhan sounds, and spiritual reminders to help you maintain your Islamic prayer routine. Notifications are scheduled based on your local prayer times and can be customized for different prayer periods.",
+        "NSLocationWhenInUseUsageDescription": "This app uses your location to calculate accurate prayer times for your specific geographic location. Your location coordinates are sent to Islamic prayer time APIs to fetch precise prayer schedules including Fajr, Dhuhr, Asr, Maghrib, and Isha times for your exact location. This ensures you receive the most accurate prayer times for your area.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "This app uses your location to calculate accurate prayer times for your specific geographic location. Your location coordinates are sent to Islamic prayer time APIs to fetch precise prayer schedules including Fajr, Dhuhr, Asr, Maghrib, and Isha times for your exact location. This ensures you receive the most accurate prayer times for your area."
       }
     },
-    "owner": "coulibalytech"
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "package": "com.isiTech.risefortahajjud"
+    },
+    "web": {},
+    "extra": {
+      "eas": {
+        "projectId": "e95869d6-c619-4f78-9098-64ca4588ca46"
+      }
+    }
   }
 }
