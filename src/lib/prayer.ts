@@ -8,21 +8,43 @@ import {
 } from "date-fns";
 import { CalculationMethod, Coordinates as AdhanCoordinates, PrayerTimes } from "adhan";
 
-import type { Coordinates, NextAwakening, Preferences, PrayerDay } from "@/types";
+import type {
+  CalculationMethodKey,
+  Coordinates,
+  NextAwakening,
+  Preferences,
+  PrayerDay,
+} from "@/types";
 
-function getParams() {
-  return CalculationMethod.MuslimWorldLeague();
+const calculationMethodMap: Record<CalculationMethodKey, () => ReturnType<typeof CalculationMethod.MuslimWorldLeague>> = {
+  MuslimWorldLeague: () => CalculationMethod.MuslimWorldLeague(),
+  Egyptian: () => CalculationMethod.Egyptian(),
+  Karachi: () => CalculationMethod.Karachi(),
+  UmmAlQura: () => CalculationMethod.UmmAlQura(),
+  Dubai: () => CalculationMethod.Dubai(),
+  MoonsightingCommittee: () => CalculationMethod.MoonsightingCommittee(),
+  NorthAmerica: () => CalculationMethod.NorthAmerica(),
+  Kuwait: () => CalculationMethod.Kuwait(),
+  Qatar: () => CalculationMethod.Qatar(),
+  Singapore: () => CalculationMethod.Singapore(),
+  Tehran: () => CalculationMethod.Tehran(),
+  Turkey: () => CalculationMethod.Turkey(),
+};
+
+function getParams(calculationMethod: CalculationMethodKey) {
+  return calculationMethodMap[calculationMethod]();
 }
 
 export function buildPrayerDay(
   date: Date,
   coordinates: Coordinates,
   minutesBeforeFajr: number,
+  calculationMethod: CalculationMethodKey,
 ): PrayerDay {
   const prayerTimes = new PrayerTimes(
     new AdhanCoordinates(coordinates.latitude, coordinates.longitude),
     date,
-    getParams(),
+    getParams(calculationMethod),
   );
 
   const fajr = prayerTimes.fajr;
@@ -76,6 +98,7 @@ export function buildUpcomingAwakenings(
       candidateDate,
       coordinates,
       preferences.minutesBeforeFajr,
+      preferences.calculationMethod,
     );
 
     if (!preferences.activeDays.includes(candidateDay.dayIndex)) {
@@ -95,4 +118,3 @@ export function buildUpcomingAwakenings(
 
   return upcoming;
 }
-

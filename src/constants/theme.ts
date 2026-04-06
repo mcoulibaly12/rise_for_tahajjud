@@ -1,3 +1,5 @@
+import type { CalculationMethodKey } from "@/types";
+
 export const colors = {
   night: "#050508",
   indigo: "#1E1B4B",
@@ -31,3 +33,20 @@ export const dayLabels = [
   { value: 6, short: "Sa", full: "Saturday" },
 ];
 
+export const calculationMethodOptions: Array<{
+  value: CalculationMethodKey;
+  label: string;
+}> = [
+  { value: "MuslimWorldLeague", label: "Muslim World League" },
+  { value: "Egyptian", label: "Egyptian" },
+  { value: "Karachi", label: "Karachi" },
+  { value: "UmmAlQura", label: "Umm al-Qura" },
+  { value: "Dubai", label: "Dubai" },
+  { value: "MoonsightingCommittee", label: "Moonsighting Committee" },
+  { value: "NorthAmerica", label: "North America (ISNA)" },
+  { value: "Kuwait", label: "Kuwait" },
+  { value: "Qatar", label: "Qatar" },
+  { value: "Singapore", label: "Singapore" },
+  { value: "Tehran", label: "Tehran" },
+  { value: "Turkey", label: "Turkey" },
+];

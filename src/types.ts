@@ -1,7 +1,22 @@
+export type CalculationMethodKey =
+  | "MuslimWorldLeague"
+  | "Egyptian"
+  | "Karachi"
+  | "UmmAlQura"
+  | "Dubai"
+  | "MoonsightingCommittee"
+  | "NorthAmerica"
+  | "Kuwait"
+  | "Qatar"
+  | "Singapore"
+  | "Tehran"
+  | "Turkey";
+
 export type Preferences = {
   minutesBeforeFajr: number;
   activeDays: number[];
   isEnabled: boolean;
+  calculationMethod: CalculationMethodKey;
 };
 
 export type Coordinates = {
@@ -24,4 +39,3 @@ export type NextAwakening = PrayerDay & {
   label: string;
   fajrLabel: string;
 };
-

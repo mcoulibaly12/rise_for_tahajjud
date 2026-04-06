@@ -36,7 +36,7 @@ import { colors, fonts } from "@/constants/theme";
 import { syncScheduledNotifications, prepareNotifications } from "@/lib/notifications";
 import { buildPrayerDay, buildUpcomingAwakenings } from "@/lib/prayer";
 import { defaultPreferences, loadPreferences, savePreferences } from "@/lib/storage";
-import type { Coordinates, Preferences } from "@/types";
+import type { CalculationMethodKey, Coordinates, Preferences } from "@/types";
 
 function formatCountdown(target: Date | null, now: Date) {
   if (!target) {
@@ -145,7 +145,12 @@ function AppContent() {
   }
 
   const todayPrayerDay = coordinates
-    ? buildPrayerDay(startOfDay(now), coordinates, preferences.minutesBeforeFajr)
+    ? buildPrayerDay(
+        startOfDay(now),
+        coordinates,
+        preferences.minutesBeforeFajr,
+        preferences.calculationMethod,
+      )
     : null;
   const upcomingAwakenings = coordinates
     ? buildUpcomingAwakenings(now, coordinates, preferences)
@@ -165,6 +170,7 @@ function AppContent() {
     preferences.isEnabled,
     preferences.minutesBeforeFajr,
     preferences.activeDays,
+    preferences.calculationMethod,
   ]);
 
   async function triggerImpact(style: Haptics.ImpactFeedbackStyle = Haptics.ImpactFeedbackStyle.Light) {
@@ -202,6 +208,14 @@ function AppContent() {
         activeDays: nextDays.length > 0 ? nextDays : current.activeDays,
       };
     });
+  }
+
+  async function setCalculationMethod(value: CalculationMethodKey) {
+    await triggerImpact(Haptics.ImpactFeedbackStyle.Medium);
+    setPreferences((current) => ({
+      ...current,
+      calculationMethod: value,
+    }));
   }
 
   async function toggleEnabled() {
@@ -308,6 +322,7 @@ function AppContent() {
           preferences={preferences}
           onClose={() => setSettingsVisible(false)}
           onOffsetChange={setOffset}
+          onCalculationMethodChange={setCalculationMethod}
           onToggleDay={toggleDay}
         />
       </View>
