@@ -2,7 +2,7 @@
   "expo": {
     "name": "Rise for Tahajjud",
     "slug": "rise_for_tahajjud",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "jsEngine": "hermes",
     "icon": "./assets/logo.png",
     "orientation": "portrait",
