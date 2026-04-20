@@ -93,7 +93,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "2.0.0"
+        versionName "2.1.0"
     }
     signingConfigs {
         debug {
@@ -174,4 +174,10 @@ dependencies {
     } else {
         implementation jscFlavor
     }
+}
+
+if (file("google-services.json").exists()) {
+    apply plugin: "com.google.gms.google-services"
+} else {
+    logger.lifecycle("[firebase] google-services.json not found for :app; skipping Google Services plugin.")
 }

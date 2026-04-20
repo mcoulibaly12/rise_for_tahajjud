@@ -4,6 +4,7 @@ import * as Notifications from "expo-notifications";
 import Constants from 'expo-constants';
 
 import type { NextAwakening } from "@/types";
+import type { AnalyticsPermissionStatus } from "@/lib/analytics";
 
 const NOTIFICATION_CHANNEL_ID = "tahajjud-awakening";
 const NOTIFICATION_SOUND = "adhan.wav";
@@ -17,12 +18,23 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export async function prepareNotifications() {
-  const permissions = await Notifications.getPermissionsAsync();
-
-  if (!permissions.granted) {
-    await Notifications.requestPermissionsAsync();
+function mapPermissionStatus(status: Notifications.PermissionStatus): AnalyticsPermissionStatus {
+  switch (status) {
+    case Notifications.PermissionStatus.GRANTED:
+      return "granted";
+    case Notifications.PermissionStatus.DENIED:
+      return "denied";
+    default:
+      return "undetermined";
   }
+}
+
+export async function prepareNotifications() {
+  const existingPermissions = await Notifications.getPermissionsAsync();
+  const permissions =
+    existingPermissions.granted
+      ? existingPermissions
+      : await Notifications.requestPermissionsAsync();
 
   if (Platform.OS === "android") {
     await Notifications.setNotificationChannelAsync(NOTIFICATION_CHANNEL_ID, {
@@ -39,12 +51,18 @@ export async function prepareNotifications() {
 
   // Get and log push token for testing
   try {
-    const pushToken = await getExpoPushToken();
+    const pushToken = permissions.granted ? await getExpoPushToken() : null;
     console.log("Expo Push Token:", pushToken);
-    return pushToken;
+    return {
+      permissionStatus: mapPermissionStatus(permissions.status),
+      pushToken,
+    };
   } catch (error) {
     console.error("Failed to get push token:", error);
-    return null;
+    return {
+      permissionStatus: mapPermissionStatus(permissions.status),
+      pushToken: null,
+    };
   }
 }
 

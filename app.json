@@ -22,11 +22,13 @@
         }
       ],
       "expo-location",
-      "expo-localization"
+      "expo-localization",
+      "@react-native-firebase/app"
     ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.isiTech.risefortahajjud",
+      "googleServicesFile": "./ios/RiseforTahajjud/GoogleService-Info.plist",
       "buildNumber": "3",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,

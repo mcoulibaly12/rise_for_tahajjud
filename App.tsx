@@ -33,6 +33,12 @@ import { PrayerList } from "@/components/PrayerList";
 import { QuickStats } from "@/components/QuickStats";
 import { SettingsModal } from "@/components/SettingsModal";
 import { colors, fonts } from "@/constants/theme";
+import {
+  initializeAnalytics,
+  trackAppOpened,
+  trackPermissionResult,
+  trackSettingsChanged,
+} from "@/lib/analytics";
 import { syncScheduledNotifications, prepareNotifications } from "@/lib/notifications";
 import { buildPrayerDay, buildUpcomingAwakenings } from "@/lib/prayer";
 import { defaultPreferences, loadPreferences, savePreferences } from "@/lib/storage";
@@ -82,6 +88,9 @@ function AppContent() {
     let mounted = true;
 
     async function bootstrap() {
+      void initializeAnalytics();
+      void trackAppOpened();
+
       const stored = await loadPreferences();
 
       if (mounted) {
@@ -89,8 +98,9 @@ function AppContent() {
         setHasLoadedPreferences(true);
       }
 
-      await prepareNotifications();
-      await refreshLocation();
+      const notificationSetup = await prepareNotifications();
+      void trackPermissionResult("notifications", notificationSetup.permissionStatus);
+      await refreshLocation({ trackPermission: true });
     }
 
     bootstrap();
@@ -108,11 +118,17 @@ function AppContent() {
     savePreferences(preferences).catch(() => undefined);
   }, [hasLoadedPreferences, preferences]);
 
-  async function refreshLocation() {
+  async function refreshLocation(options?: { trackPermission?: boolean }) {
     setLocationError(null);
     setRefreshing(true);
 
     const { status } = await Location.requestForegroundPermissionsAsync();
+    const permissionStatus =
+      status === "granted" ? "granted" : status === "denied" ? "denied" : "undetermined";
+
+    if (options?.trackPermission) {
+      void trackPermissionResult("location", permissionStatus);
+    }
 
     if (status !== "granted") {
       setCoordinates(null);
@@ -195,6 +211,10 @@ function AppContent() {
     }));
   }
 
+  async function commitOffset(value: number) {
+    void trackSettingsChanged(["minutes_before_fajr"]);
+  }
+
   async function toggleDay(day: number) {
     await triggerImpact(Haptics.ImpactFeedbackStyle.Medium);
     setPreferences((current) => {
@@ -208,14 +228,20 @@ function AppContent() {
         activeDays: nextDays.length > 0 ? nextDays : current.activeDays,
       };
     });
+    void trackSettingsChanged(["active_days"]);
   }
 
   async function setCalculationMethod(value: CalculationMethodKey) {
+    if (value === preferences.calculationMethod) {
+      return;
+    }
+
     await triggerImpact(Haptics.ImpactFeedbackStyle.Medium);
     setPreferences((current) => ({
       ...current,
       calculationMethod: value,
     }));
+    void trackSettingsChanged(["calculation_method"]);
   }
 
   async function toggleEnabled() {
@@ -224,6 +250,7 @@ function AppContent() {
       ...current,
       isEnabled: !current.isEnabled,
     }));
+    void trackSettingsChanged(["is_enabled"]);
   }
 
   if (!fontsLoaded || !hasLoadedPreferences) {
@@ -259,7 +286,14 @@ function AppContent() {
           alwaysBounceVertical={true}
           contentContainerStyle={styles.content}
           showsVerticalScrollIndicator={false}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refreshLocation} />}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={() => {
+                void refreshLocation();
+              }}
+            />
+          }
         >
           <Header onOpenSettings={() => setSettingsVisible(true)} />
 
@@ -284,7 +318,12 @@ function AppContent() {
             >
               <Text style={styles.locationErrorTitle}>Location needed</Text>
               <Text style={styles.locationErrorBody}>{locationError}</Text>
-              <Pressable onPress={refreshLocation} style={styles.locationButton}>
+              <Pressable
+                onPress={() => {
+                  void refreshLocation();
+                }}
+                style={styles.locationButton}
+              >
                 <Text style={styles.locationButtonText}>Try again</Text>
               </Pressable>
             </MotiView>
@@ -322,6 +361,7 @@ function AppContent() {
           preferences={preferences}
           onClose={() => setSettingsVisible(false)}
           onOffsetChange={setOffset}
+          onOffsetCommit={commitOffset}
           onCalculationMethodChange={setCalculationMethod}
           onToggleDay={toggleDay}
         />

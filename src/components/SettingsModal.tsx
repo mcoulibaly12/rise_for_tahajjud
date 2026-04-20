@@ -12,6 +12,7 @@ type SettingsModalProps = {
   preferences: Preferences;
   onClose: () => void;
   onOffsetChange: (value: number) => void;
+  onOffsetCommit: (value: number) => void;
   onCalculationMethodChange: (value: CalculationMethodKey) => void;
   onToggleDay: (day: number) => void;
 };
@@ -21,6 +22,7 @@ export function SettingsModal({
   preferences,
   onClose,
   onOffsetChange,
+  onOffsetCommit,
   onCalculationMethodChange,
   onToggleDay,
 }: SettingsModalProps) {
@@ -60,6 +62,7 @@ export function SettingsModal({
                 step={1}
                 value={preferences.minutesBeforeFajr}
                 onValueChange={onOffsetChange}
+                onSlidingComplete={onOffsetCommit}
                 minimumTrackTintColor={colors.primaryGold}
                 maximumTrackTintColor="rgba(255,255,255,0.16)"
                 thumbTintColor={colors.primaryGold}
