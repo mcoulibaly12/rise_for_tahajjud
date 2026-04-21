@@ -110,6 +110,10 @@ export async function trackSettingsChanged(changedFields: AnalyticsSettingsField
   }
 
   const uniqueChangedFields = [...new Set(changedFields)].sort();
+  console.log("[analytics] settings_changed", {
+    changed_fields: uniqueChangedFields.join(","),
+    changed_field_count: uniqueChangedFields.length,
+  });
 
   await withAnalytics((instance) =>
     instance.logEvent("settings_changed", {

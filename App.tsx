@@ -212,7 +212,7 @@ function AppContent() {
   }
 
   async function commitOffset(value: number) {
-    void trackSettingsChanged(["minutes_before_fajr"]);
+    await trackSettingsChanged(["minutes_before_fajr"]);
   }
 
   async function toggleDay(day: number) {
@@ -228,7 +228,7 @@ function AppContent() {
         activeDays: nextDays.length > 0 ? nextDays : current.activeDays,
       };
     });
-    void trackSettingsChanged(["active_days"]);
+    await trackSettingsChanged(["active_days"]);
   }
 
   async function setCalculationMethod(value: CalculationMethodKey) {
@@ -241,7 +241,7 @@ function AppContent() {
       ...current,
       calculationMethod: value,
     }));
-    void trackSettingsChanged(["calculation_method"]);
+    await trackSettingsChanged(["calculation_method"]);
   }
 
   async function toggleEnabled() {
@@ -250,7 +250,7 @@ function AppContent() {
       ...current,
       isEnabled: !current.isEnabled,
     }));
-    void trackSettingsChanged(["is_enabled"]);
+    await trackSettingsChanged(["is_enabled"]);
   }
 
   if (!fontsLoaded || !hasLoadedPreferences) {
