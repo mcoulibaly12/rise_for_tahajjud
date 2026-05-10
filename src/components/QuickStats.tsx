@@ -1,7 +1,8 @@
 import { format } from "date-fns";
 import { Minus, Plus } from "lucide-react-native";
 import { MotiView } from "moti";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import { Pressable, StyleSheet, Text, View, useWindowDimensions } from "react-native";
 
 import { GlassCard } from "@/components/GlassCard";
 import { colors, fonts } from "@/constants/theme";
@@ -13,22 +14,38 @@ type QuickStatsProps = {
   onAdjustOffset: (delta: number) => void;
 };
 
+const GRID_GAP = 12;
+const COMPACT_CARD_WIDTH = 176;
+
 export function QuickStats({
   nextAwakening,
   minutesBeforeFajr,
   onAdjustOffset,
 }: QuickStatsProps) {
+  const { width } = useWindowDimensions();
+  const [gridWidth, setGridWidth] = useState<number | null>(null);
+  const availableWidth = gridWidth ?? width;
+  const cardWidth = (availableWidth - GRID_GAP) / 2;
+  const isCompact = cardWidth <= COMPACT_CARD_WIDTH;
+
   return (
-    <View style={styles.grid}>
+    <View
+      style={styles.grid}
+      onLayout={(event) => {
+        setGridWidth(event.nativeEvent.layout.width);
+      }}
+    >
       <MotiView
         from={{ opacity: 0, translateY: 20 }}
         animate={{ opacity: 1, translateY: 0 }}
         transition={{ type: "timing", duration: 700, delay: 140 }}
         style={styles.column}
       >
-        <GlassCard style={styles.statCard}>
-          <Text style={styles.label}>{nextAwakening?.fajrLabel ?? "Fajr"}</Text>
-          <Text style={styles.value}>
+        <GlassCard style={styles.statCard} compact={isCompact}>
+          <Text numberOfLines={2} style={styles.label}>
+            {nextAwakening?.fajrLabel ?? "Fajr"}
+          </Text>
+          <Text style={[styles.value, isCompact && styles.valueCompact]}>
             {nextAwakening ? format(nextAwakening.prayers.Fajr, "h:mm a") : "--:--"}
           </Text>
         </GlassCard>
@@ -42,19 +59,31 @@ export function QuickStats({
       >
         <GlassCard
           style={styles.statCard}
+          compact={isCompact}
+          layout={isCompact ? "stacked" : "horizontal"}
           rightSlot={
             <View style={styles.adjusters}>
-              <Pressable onPress={() => onAdjustOffset(-1)} style={styles.iconButton}>
+              <Pressable
+                onPress={() => onAdjustOffset(-1)}
+                style={[styles.iconButton, isCompact && styles.iconButtonCompact]}
+              >
                 <Minus color={colors.textPrimary} size={16} strokeWidth={1.8} />
               </Pressable>
-              <Pressable onPress={() => onAdjustOffset(1)} style={styles.iconButton}>
+              <Pressable
+                onPress={() => onAdjustOffset(1)}
+                style={[styles.iconButton, isCompact && styles.iconButtonCompact]}
+              >
                 <Plus color={colors.textPrimary} size={16} strokeWidth={1.8} />
               </Pressable>
             </View>
           }
         >
-          <Text style={styles.label}>Offset</Text>
-          <Text style={styles.value}>{minutesBeforeFajr}m</Text>
+          <Text numberOfLines={1} style={styles.label}>
+            Offset
+          </Text>
+          <Text style={[styles.value, isCompact && styles.valueCompact]}>
+            {minutesBeforeFajr}m
+          </Text>
         </GlassCard>
       </MotiView>
     </View>
@@ -64,12 +93,14 @@ export function QuickStats({
 const styles = StyleSheet.create({
   grid: {
     flexDirection: "row",
-    gap: 12,
+    alignItems: "stretch",
+    gap: GRID_GAP,
   },
   column: {
     flex: 1,
   },
   statCard: {
+    flex: 1,
     minHeight: 112,
   },
   label: {
@@ -83,9 +114,15 @@ const styles = StyleSheet.create({
     fontFamily: fonts.mono,
     fontSize: 24,
   },
+  valueCompact: {
+    fontSize: 22,
+    lineHeight: 28,
+  },
   adjusters: {
     flexDirection: "row",
+    justifyContent: "space-between",
     gap: 10,
+    width: "100%",
   },
   iconButton: {
     width: 34,
@@ -97,5 +134,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.glassBorder,
   },
+  iconButtonCompact: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+  },
 });
-
