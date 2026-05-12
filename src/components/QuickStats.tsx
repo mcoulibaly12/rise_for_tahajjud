@@ -57,34 +57,43 @@ export function QuickStats({
         transition={{ type: "timing", duration: 700, delay: 220 }}
         style={styles.column}
       >
-        <GlassCard
-          style={styles.statCard}
-          compact={isCompact}
-          layout={isCompact ? "stacked" : "horizontal"}
-          rightSlot={
+        {isCompact ? (
+          <GlassCard style={styles.statCard} compact layout="stacked">
+            <View style={styles.offsetCompactContent}>
+              <Text numberOfLines={1} style={styles.label}>
+                Offset
+              </Text>
+              <Text style={[styles.value, styles.valueCompact]}>{minutesBeforeFajr}m</Text>
+            </View>
             <View style={styles.adjusters}>
-              <Pressable
-                onPress={() => onAdjustOffset(-1)}
-                style={[styles.iconButton, isCompact && styles.iconButtonCompact]}
-              >
+              <Pressable onPress={() => onAdjustOffset(-1)} style={[styles.iconButton, styles.iconButtonCompact]}>
                 <Minus color={colors.textPrimary} size={16} strokeWidth={1.8} />
               </Pressable>
-              <Pressable
-                onPress={() => onAdjustOffset(1)}
-                style={[styles.iconButton, isCompact && styles.iconButtonCompact]}
-              >
+              <Pressable onPress={() => onAdjustOffset(1)} style={[styles.iconButton, styles.iconButtonCompact]}>
                 <Plus color={colors.textPrimary} size={16} strokeWidth={1.8} />
               </Pressable>
             </View>
-          }
-        >
-          <Text numberOfLines={1} style={styles.label}>
-            Offset
-          </Text>
-          <Text style={[styles.value, isCompact && styles.valueCompact]}>
-            {minutesBeforeFajr}m
-          </Text>
-        </GlassCard>
+          </GlassCard>
+        ) : (
+          <GlassCard
+            style={styles.statCard}
+            rightSlot={
+              <View style={styles.adjustersInline}>
+                <Pressable onPress={() => onAdjustOffset(-1)} style={styles.iconButton}>
+                  <Minus color={colors.textPrimary} size={16} strokeWidth={1.8} />
+                </Pressable>
+                <Pressable onPress={() => onAdjustOffset(1)} style={styles.iconButton}>
+                  <Plus color={colors.textPrimary} size={16} strokeWidth={1.8} />
+                </Pressable>
+              </View>
+            }
+          >
+            <Text numberOfLines={1} style={styles.label}>
+              Offset
+            </Text>
+            <Text style={styles.value}>{minutesBeforeFajr}m</Text>
+          </GlassCard>
+        )}
       </MotiView>
     </View>
   );
@@ -118,11 +127,19 @@ const styles = StyleSheet.create({
     fontSize: 22,
     lineHeight: 28,
   },
+  offsetCompactContent: {
+    gap: 8,
+  },
   adjusters: {
     flexDirection: "row",
     justifyContent: "space-between",
     gap: 10,
+    marginTop: 6,
     width: "100%",
+  },
+  adjustersInline: {
+    flexDirection: "row",
+    gap: 10,
   },
   iconButton: {
     width: 34,

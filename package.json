@@ -7,6 +7,7 @@
     "start": "expo start --dev-client",
     "android": "expo run:android",
     "ios": "expo run:ios",
+    "ios:17": "expo run:ios --device 'iPhone 17 Pro Max'",
     "ios:sim": "node scripts/run-ios-sim.mjs",
     "ios:debug-analytics": "xcrun simctl boot 'iPhone 16 Pro Max' || true && open -a Simulator && xcrun simctl spawn booted launchctl setenv FIREBASE_ANALYTICS_DEBUG_MODE 1 && LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 npx expo run:ios",
     "ios:build:production": "eas build -p ios --profile production",
