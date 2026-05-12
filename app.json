@@ -2,7 +2,7 @@
   "expo": {
     "name": "Rise for Tahajjud",
     "slug": "rise_for_tahajjud",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "jsEngine": "hermes",
     "icon": "./assets/logo.png",
     "orientation": "portrait",
@@ -29,7 +29,7 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.isiTech.risefortahajjud",
       "googleServicesFile": "./ios/RiseforTahajjud/GoogleService-Info.plist",
-      "buildNumber": "4",
+      "buildNumber": "5",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
         "NSUserNotificationUsageDescription": "This app uses notifications to send you daily prayer time reminders and wake-up alerts for Tahajjud prayer. Notifications include daily prayer schedules, gentle wake-up alarms with adhan sounds, and spiritual reminders to help you maintain your Islamic prayer routine. Notifications are scheduled based on your local prayer times and can be customized for different prayer periods.",
